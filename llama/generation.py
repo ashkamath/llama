@@ -83,6 +83,10 @@ class Llama:
         checkpoint = torch.load(ckpt_path, map_location="cpu")
         with open(Path(ckpt_dir) / "params.json", "r") as f:
             params = json.loads(f.read())
+        
+        for k in ['dtype','model_parallel_size', 'slurm', 'model', 'tokenizer_dir', 'tokenizer']:
+            if k in params:
+                del params[k]
 
         model_args: ModelArgs = ModelArgs(
             max_seq_len=max_seq_len,
